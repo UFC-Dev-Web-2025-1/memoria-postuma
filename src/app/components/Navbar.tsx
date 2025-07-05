@@ -1,4 +1,4 @@
-import { AppBar, Badge, Box, Button, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Badge, Box, Button, IconButton, Link, MenuItem, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,8 +21,12 @@ export default function Navbar() {
           </Typography>
 
           <Box sx={{ gap: '0.8rem', marginInlineEnd: 2, display: 'flex' }}>
-            <Button size="medium" variant="contained" color="primary" sx={{ color: 'white', fontWeight: '600' }}>Registrar</Button>
-            <Button size="medium" variant="contained" sx={{ color: 'white', fontWeight: '600' }} color="primary">Entrar</Button>
+            <Link href="/register">
+              <Button size="medium" variant="contained" color="primary" sx={{ color: 'white', fontWeight: '600' }}>Registrar</Button>
+            </Link>
+            <Link href="/login">
+              <Button size="medium" variant="contained" sx={{ color: 'white', fontWeight: '600' }} color="primary">Entrar</Button>
+            </Link>
           </Box>
 
           <Box sx={{ display: 'flex' }}>

@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import { Button, CssBaseline, ThemeProvider } from "@mui/material";
 import LoginPage from "./login/page";
-import Explore from "./pages/Explore";
+import Explore from "./explore/Explore";
 import theme from "./theme";
 
 export default function Home() {

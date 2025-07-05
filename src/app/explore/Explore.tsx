@@ -1,3 +1,4 @@
+"use client";
 import { Box, Container, Grid } from "@mui/material";
 import Navbar from "../components/Navbar";
 import CardProfile from "../components/CardProfile";
