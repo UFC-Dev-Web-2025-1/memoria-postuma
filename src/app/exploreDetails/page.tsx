@@ -36,7 +36,7 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date, size }) => {
 
 export default function ExploreDetails() {
   return (
-    <Box bgcolor='#FDFAF6'>
+    <Box bgcolor='#FDFAF6' sx={{paddingTop: 7}}>
       <Navbar />
 
       <Container maxWidth="lg"

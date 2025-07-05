@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ bgcolor: '#E4EFE7' }}>
+      <AppBar position="fixed" sx={{ bgcolor: '#E4EFE7' }}>
         <Toolbar>
           <IconButton
             size="large"
