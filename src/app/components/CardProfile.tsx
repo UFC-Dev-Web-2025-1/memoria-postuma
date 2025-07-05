@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Link } from '@mui/material';
 
 interface DateLifeInfoProps {
   type: string,
@@ -51,7 +51,7 @@ export default function CardProfile() {
       maxWidth: 260, minWidth: 260, display: 'flex', flexDirection: 'column',
       alignItems: 'center',
       alignContent: 'center',
-      textAlign: 'center'
+      textAlign: 'center',
     }}>
       <CardHeader
         sx={{ alignSelf: 'start' }}
@@ -93,9 +93,11 @@ export default function CardProfile() {
 
       </CardContent>
 
-      <CardActions disableSpacing sx={{ maxWidth: 280, minWidth: 280, display: 'flex', justifyContent: 'space-between' }}>
+      <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
 
-        <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
+        <Link href="/exploreDetails">
+          <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
+        </Link>
 
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
