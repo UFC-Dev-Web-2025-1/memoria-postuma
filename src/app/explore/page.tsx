@@ -22,7 +22,7 @@ const GridCustom: React.FC<GridCustomProps> = ({ children, size = 3 }) => {
 
 export default function Explore() {
   return (
-    <Box bgcolor='#FDFAF6'>
+    <Box bgcolor='#FDFAF6' sx={{paddingTop: 7}}>
       <Navbar />
 
       <Container maxWidth="lg"
