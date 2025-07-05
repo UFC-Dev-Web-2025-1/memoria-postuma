@@ -1,13 +1,14 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import { Button } from "@mui/material";
+import { Button, CssBaseline, ThemeProvider } from "@mui/material";
+import LoginPage from "./login/page";
+import Explore from "./pages/Explore";
+import theme from "./theme";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <Button variant="contained" color="primary">
-        Clique Aqui
-      </Button>
-    </div>
+    <>
+      <Explore />
+    </>
   );
 }
