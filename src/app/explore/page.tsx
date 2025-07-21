@@ -1,7 +1,8 @@
 "use client";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import Navbar from "../components/Navbar";
 import { ReactNode } from "react";
+import AddIcon from '@mui/icons-material/Add';
 import { CardProfile } from "../components/CardProfile";
 
 export default function Explore() {
@@ -18,6 +19,8 @@ export default function Explore() {
           Navegue por histórias, memórias e tributos dedicados àqueles que deixaram saudades.
           Mantenha viva a lembrança de quem marcou vidas.
         </Typography>
+
+        <Button variant="contained" color="secondary" sx={{ color: 'white', marginTop: 2 }} startIcon={<AddIcon />}>Criar memorial</Button>
       </Container>
 
       <Container maxWidth="xl"
@@ -33,16 +36,15 @@ export default function Explore() {
 
       {
         dadosFake.map((item) => (
-          <>
+          <div key={item.id}>
             <CardProfile 
-              key={item.id}
               nome={item.nome}
               descricao={item.descricao}
               nascimento={item.nascimento}
               falecimento={item.falecimento}
               imagemMemorial={item.imagemMemorial}
             />
-          </>
+          </div>
         ))
       }
 
