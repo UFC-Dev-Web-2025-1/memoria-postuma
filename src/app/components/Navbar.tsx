@@ -1,12 +1,12 @@
-import { AppBar, Badge, Box, Button, IconButton, Link, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Badge, Box, Button, IconButton, Link, MenuItem, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export default function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" sx={{ bgcolor: '#E4EFE7' }}>
+      <AppBar position="fixed" sx={{ bgcolor: '#3C68AE' }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -14,20 +14,11 @@ export default function Navbar() {
             aria-label="menu"
             sx={{ mr: 2 }}
           >
-            <MenuIcon />
+            <MenuIcon sx={{ color: 'white' }} />
           </IconButton>
-          <Typography color="black" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography color="white" variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Explorar
           </Typography>
-
-          <Box sx={{ gap: '0.8rem', marginInlineEnd: 2, display: 'flex' }}>
-            <Link href="/register">
-              <Button size="medium" variant="contained" color="primary" sx={{ color: 'white', fontWeight: '600' }}>Registrar</Button>
-            </Link>
-            <Link href="/login">
-              <Button size="medium" variant="contained" sx={{ color: 'white', fontWeight: '600' }} color="primary">Entrar</Button>
-            </Link>
-          </Box>
 
           <Box sx={{ display: 'flex' }}>
             <MenuItem sx={{ padding: 1 }}>
@@ -35,7 +26,7 @@ export default function Navbar() {
                 size="small"
               >
                 <Badge badgeContent={0} color="error">
-                  <NotificationsIcon sx={{ color: 'black' }}/>
+                  <FavoriteIcon sx={{ color: 'white' }} />
                 </Badge>
               </IconButton>
             </MenuItem>
@@ -45,8 +36,20 @@ export default function Navbar() {
                 size="small"
               >
                 <Badge badgeContent={0} color="error">
-                  <SearchIcon sx={{ color: 'black' }}/>
+                  <NotificationsIcon sx={{ color: 'white' }} />
                 </Badge>
+              </IconButton>
+            </MenuItem>
+
+            <MenuItem sx={{ padding: 1 }}>
+              <IconButton
+                size="small"
+              >
+                <Avatar
+                  alt="Foto de perfil"
+                  src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                  sx={{ width: 45, height: 45 }}
+                />
               </IconButton>
             </MenuItem>
           </Box>
