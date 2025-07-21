@@ -33,9 +33,9 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date }) => {
     }}>
       {
         (type === 'birth') ?
-          <FlareIcon sx={{ color: '#99BC85' }} />
+          <FlareIcon color='info' />
           :
-          <ChurchIcon sx={{ color: '#99BC85' }} />
+          <ChurchIcon color='info' />
       }
       <Typography variant='body2'>
         {date}
@@ -44,56 +44,61 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date }) => {
   )
 }
 
-export default function CardProfile() {
+interface CardProfileProps {
+  nome: string,
+  descricao: string,
+  nascimento: string,
+  falecimento: string,
+  imagemMemorial: string
+}
+
+export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nascimento, falecimento, imagemMemorial }) => {
 
   return (
     <Card sx={{
-      maxWidth: 260, minWidth: 260, display: 'flex', flexDirection: 'column',
-      alignItems: 'center',
-      alignContent: 'center',
-      textAlign: 'center',
+      maxWidth: 'auto', minWidth: 260, display: 'flex', flexDirection: 'column'
     }}>
-      <CardHeader
-        sx={{ alignSelf: 'start' }}
-        title="Pedro Aurelio"
-      />
-      <CardMedia
-        component="img"
-        // height="194"
-        // imagem de exemplo 
-        image="https://fastly.picsum.photos/id/242/500/500.jpg?hmac=_2EOQqUaWWLne0zEhD6IGOXKoJ5E3ng4imXmM2-0_6Q"
-        alt="Avatar icon"
+      <CardContent
         sx={{
           display: 'flex',
-          width: 230,
-          borderRadius: 50,
-        }}
-      />
-
-      <CardContent sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        alignContent: 'center',
-        textAlign: 'center'
-      }}>
-
-        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-          Breve descrição...
-        </Typography>
-
-        <Box sx={{
-          display: 'flex',
           flexDirection: 'row',
-          gap: 2
-        }}>
-          <DateLifeInfo type='birth' date='10/02/1982' />
-          <DateLifeInfo type='death' date='28/11/2019' />
-        </Box>
+          // backgroundColor: 'green',
+          paddingBottom: 0
+        }}
+      >
+        <CardMedia
+          component="img"
+          image={imagemMemorial}
+          alt="Avatar icon"
+          sx={{
+            display: 'flex',
+            width: 210,
+            height: 210,
+            borderRadius: 50,
+            marginInlineEnd: 1
+          }}
+        />
+        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', flexDirection: 'column', justifyContent: 'center', gap: 1 }}>
+          <Typography variant="h6" sx={{ color: 'black' }}>
+            {nome}
+          </Typography>
 
+          <Typography variant="subtitle2" sx={{ color: 'text.secondary', maxWidth: 170 }}>
+            {descricao}
+          </Typography>
+
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 2
+          }}>
+            <DateLifeInfo type='birth' date={nascimento} />
+            <DateLifeInfo type='death' date={falecimento} />
+          </Box>
+        </Box>
       </CardContent>
 
-      <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+      <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', paddingTop: 1 }}>
 
         <Link href="/exploreDetails">
           <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
