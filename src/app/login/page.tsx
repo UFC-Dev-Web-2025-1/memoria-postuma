@@ -1,34 +1,122 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { TextField, Button, Typography, Box, IconButton, InputAdornment, Paper, Link } from "@mui/material";
+import { 
+    TextField, 
+    Button, 
+    Typography, 
+    Box, 
+    IconButton, 
+    InputAdornment, 
+    Paper, 
+    Link,
+    Divider,
+    Alert,
+    CircularProgress
+} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { authStyles } from "../../styles/auth.styles";
+import { authService } from "../../utils/auth";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function LoginPage() {
     const router = useRouter();
+    const { login } = useAuth();
     const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loginLoading, setLoginLoading] = useState(false);
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const [alert, setAlert] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+    const handleGoogleLogin = async () => {
+        setGoogleLoading(true);
+        setAlert(null);
+        
+        try {
+            const result = await authService.loginWithGoogle();
+            if (result.success && result.user) {
+                login(result.user);
+                setAlert({ type: 'success', message: result.message });
+                router.push('/');
+            } else {
+                setAlert({ type: 'error', message: result.message });
+            }
+        } catch (error) {
+            setAlert({ type: 'error', message: 'Erro ao entrar com Google' });
+        } finally {
+            setGoogleLoading(false);
+        }
+    };
+
+    const handleLogin = async () => {
+        setLoginLoading(true);
+        setAlert(null);
+        
+        try {
+            const result = await authService.login(email, password);
+            if (result.success && result.user) {
+                login(result.user);
+                setAlert({ type: 'success', message: result.message });
+                router.push('/');
+                setEmail("");
+                setPassword("");
+                setAlert({ type: 'success', message: result.message });
+            } else {
+                setAlert({ type: 'error', message: result.message });
+            }
+        } catch (error) {
+            setAlert({ type: 'error', message: 'Erro ao fazer login' });
+        } finally {
+            setLoginLoading(false);
+        }
+    };
 
     return (
-        <Box sx={{ minHeight: "100vh", bgcolor: "#e6f0ea", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Paper elevation={3} sx={{ p: 6, width: 450, height: 500, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <Typography variant="h4" mb={2}>Login</Typography>
-                <Typography mb={2}>
-                    Não tem uma conta?{" "}
-                    <Link href="/register" sx={{ color: "#99BC85", fontWeight: 500, textDecoration: "none" }}>REGISTRE</Link>
+        <Box sx={authStyles.container}>
+            <Paper elevation={3} sx={{ ...authStyles.paper, height: alert ? 600 : 550 }}>
+                <Typography variant="h4" sx={authStyles.title}>
+                    Entrar
                 </Typography>
+                <Typography sx={authStyles.subtitle}>
+                    Não tem uma conta?{" "}
+                    <Link href="/register" sx={authStyles.link}>
+                        REGISTRE-SE
+                    </Link>
+                </Typography>
+
+                {alert && (
+                    <Alert 
+                        severity={alert.type} 
+                        sx={{ width: '100%', mb: 2 }}
+                        onClose={() => setAlert(null)}
+                    >
+                        {alert.message}
+                    </Alert>
+                )}
+                
                 <TextField
-                    label="Email"
+                    label="e-mail"
                     placeholder="ex: emillyefanny@user.com"
                     fullWidth
                     margin="normal"
+                    sx={authStyles.textField}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={loginLoading || googleLoading}
                 />
+                
                 <TextField
-                    label="Senha"
+                    label="senha"
                     placeholder="ex: 12334669023cmsjz"
                     type={showPassword ? "text" : "password"}
                     fullWidth
                     margin="normal"
+                    sx={authStyles.textField}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loginLoading || googleLoading}
                     slotProps={{
                         input: {
                             endAdornment: (
@@ -36,6 +124,7 @@ export default function LoginPage() {
                                     <IconButton
                                         onClick={() => setShowPassword(!showPassword)}
                                         edge="end"
+                                        disabled={loginLoading || googleLoading}
                                     >
                                         {showPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
@@ -44,21 +133,36 @@ export default function LoginPage() {
                         },
                     }}
                 />
+                
                 <Button
                     variant="contained"
-                    sx={{
-                        mt: 3,
-                        bgcolor: "#99BC85",
-                        color: "#fff",
-                        boxShadow: 2,
-                        "&:hover": { bgcolor: "#7fa36b" },
-                        width: 120,
-                        alignSelf: "center",
-                        fontWeight: 600,
-                        letterSpacing: 1
-                    }}
+                    sx={authStyles.primaryButton}
+                    onClick={handleLogin}
+                    disabled={loginLoading || googleLoading || !email || !password}
+                    startIcon={loginLoading ? <CircularProgress size={20} color="inherit" /> : null}
                 >
-                    LOGIN
+                    {loginLoading ? 'ENTRANDO...' : 'ENTRAR'}
+                </Button>
+
+                <Divider sx={authStyles.divider}>ou</Divider>
+
+                <Button
+                    variant="outlined"
+                    sx={authStyles.googleButton}
+                    onClick={handleGoogleLogin}
+                    disabled={loginLoading || googleLoading}
+                    startIcon={
+                        googleLoading ? <CircularProgress size={20} color="inherit" /> : (
+                            <Box
+                                component="img"
+                                src="https://developers.google.com/identity/images/g-logo.png"
+                                alt="Google"
+                                sx={authStyles.googleIcon}
+                            />
+                        )
+                    }
+                >
+                    {googleLoading ? 'ENTRANDO...' : 'ENTRAR COM GOOGLE'}
                 </Button>
             </Paper>
         </Box>
