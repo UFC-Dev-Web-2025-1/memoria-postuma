@@ -1,6 +1,6 @@
 "use client";
 import { Avatar, Box, Container, IconButton, Tab, Tabs, Typography } from "@mui/material";
-import Navbar from "../components/Navbar";
+import {Navbar} from "../components/Navbar";
 import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -23,9 +23,9 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date, size }) => {
     }}>
       {
         (type === 'birth') ?
-          <FlareIcon sx={{ color: '#99BC85' }} />
+          <FlareIcon color="info" />
           :
-          <ChurchIcon sx={{ color: '#99BC85' }} />
+          <ChurchIcon color="info" />
       }
       <Typography variant='body1'>
         {date}
@@ -37,7 +37,7 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date, size }) => {
 export default function ExploreDetails() {
   return (
     <Box bgcolor='#FDFAF6' sx={{paddingTop: 7}}>
-      <Navbar />
+      <Navbar paginaAtual="Explorar memorial"/>
 
       <Container maxWidth="lg"
         sx={{
@@ -53,7 +53,7 @@ export default function ExploreDetails() {
           flexDirection: 'column'
         }}>
           <Box>
-            <img src={itemData.img} width={'100%'} height={300} alt="" />
+            <img src={itemData.img} width={'100%'} height={300} />
           </Box>
 
           <Box sx={{
@@ -67,7 +67,7 @@ export default function ExploreDetails() {
           }}>
             <Avatar
               alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
+              src="https://conteudo.imguol.com.br/c/entretenimento/1e/2021/01/29/idoso-negro-1611935501059_v2_450x450.jpg"
               sx={{ width: 200, height: 200 }}
             />
 
@@ -82,7 +82,7 @@ export default function ExploreDetails() {
               </Typography>
 
               <Typography variant="h6" fontWeight={'bold'} >
-                Pedro Aurélio
+                João Rocha de Almeida
               </Typography>
 
               <Box sx={{
@@ -129,6 +129,6 @@ export default function ExploreDetails() {
 
 const itemData =
 {
-  img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
+  img: 'https://mundonegro.inf.br/wp-content/uploads/2021/07/Dia-Mundial-dos-Avos.jpg',
   title: 'Breakfast',
 };
