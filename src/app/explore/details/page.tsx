@@ -1,12 +1,12 @@
 "use client";
 import { Avatar, Box, Container, IconButton, Tab, Tabs, Typography } from "@mui/material";
-import {Navbar} from "../components/Navbar";
+import {Navbar} from "../../components/Navbar";
 import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import ShareIcon from '@mui/icons-material/Share';
-import DetailsTab from "../components/DetailsTab";
+import DetailsTab from "../../components/DetailsTab";
 
 interface DateLifeInfoProps {
   type: string,

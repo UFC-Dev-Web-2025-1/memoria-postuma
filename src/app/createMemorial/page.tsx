@@ -5,6 +5,7 @@ import { Navbar } from "../components/Navbar";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import React, { ReactNode } from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import Link from 'next/link';
 
 interface LabelFormProps {
   label: string
@@ -165,7 +166,9 @@ export default function CreateMemorial() {
           </DivInputs>
 
           <DivInputs>
-            <Button variant='contained' color='secondary' sx={{ color: 'white' }} startIcon={ <AddIcon /> }>Criar</Button>
+            <Link href={"/explore"}>
+              <Button variant='contained' color='secondary' sx={{ color: 'white' }} startIcon={ <AddIcon /> }>Criar</Button>
+            </Link>
           </DivInputs>
 
         </Box>

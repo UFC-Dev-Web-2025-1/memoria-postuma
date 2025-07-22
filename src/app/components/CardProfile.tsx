@@ -16,7 +16,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
-import { Box, Button, Link } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import Link from 'next/link';
 
 interface DateLifeInfoProps {
   type: string,
@@ -100,7 +101,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
 
       <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', paddingTop: 1 }}>
 
-        <Link href="/exploreDetails">
+        <Link href="/explore/details">
           <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
         </Link>
 

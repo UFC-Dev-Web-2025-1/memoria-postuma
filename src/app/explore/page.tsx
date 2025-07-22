@@ -1,9 +1,10 @@
 "use client";
-import { Box, Button, Container, Grid, Link, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { Navbar } from "../components/Navbar";
 import { ReactNode } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { CardProfile } from "../components/CardProfile";
+import Link from "next/link";
 
 export default function Explore() {
   return (
