@@ -8,7 +8,11 @@ import { CardProfile } from "../components/CardProfile";
 export default function Explore() {
   return (
     <Box bgcolor='#FDFAF6' sx={{paddingTop: 12, minHeight: '100vh', maxHeight: '100%'}}>
+<<<<<<< Updated upstream
       <Navbar paginaAtual="Explorar"/>
+=======
+      <Navbar title = "Explore" />
+>>>>>>> Stashed changes
 
       <Container maxWidth='md' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', gap: 1 }}>
         <Typography variant="h4">

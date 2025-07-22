@@ -4,11 +4,18 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 interface NavbarProps {
+<<<<<<< Updated upstream
   // por enquanto manterei o controle da pagina atual apenas por uma prop de string
   paginaAtual: string
 }
 
 export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
+=======
+  title: string;  // New prop to dynamically set the navbar title
+}
+
+export default function Navbar({ title }: NavbarProps) {
+>>>>>>> Stashed changes
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ bgcolor: '#3C68AE' }}>
@@ -22,7 +29,11 @@ export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
             <MenuIcon sx={{ color: 'white' }} />
           </IconButton>
           <Typography color="white" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+<<<<<<< Updated upstream
             {paginaAtual}
+=======
+           {title}
+>>>>>>> Stashed changes
           </Typography>
 
           <Box sx={{ display: 'flex' }}>
