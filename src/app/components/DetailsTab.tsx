@@ -68,8 +68,8 @@ export default function DetailsTab() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Memórias" {...a11yProps(0)} sx={{ color: 'white' }}/>
-          <Tab label="História" {...a11yProps(1)} sx={{ color: 'white' }}/>
+          <Tab label="Memórias" {...a11yProps(0)} sx={{ color: 'black' }}/>
+          <Tab label="História" {...a11yProps(1)} sx={{ color: 'black' }}/>
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>

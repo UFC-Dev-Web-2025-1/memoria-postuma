@@ -39,7 +39,7 @@ export default function LoginPage() {
             if (result.success && result.user) {
                 login(result.user);
                 setAlert({ type: 'success', message: result.message });
-                router.push('/');
+                router.push('/home');
             } else {
                 setAlert({ type: 'error', message: result.message });
             }
@@ -59,7 +59,7 @@ export default function LoginPage() {
             if (result.success && result.user) {
                 login(result.user);
                 setAlert({ type: 'success', message: result.message });
-                router.push('/');
+                router.push('/home');
                 setEmail("");
                 setPassword("");
                 setAlert({ type: 'success', message: result.message });
@@ -81,7 +81,7 @@ export default function LoginPage() {
                 </Typography>
                 <Typography sx={authStyles.subtitle}>
                     Não tem uma conta?{" "}
-                    <Link href="/register" sx={authStyles.link}>
+                    <Link href="/" sx={authStyles.link}>
                         REGISTRE-SE
                     </Link>
                 </Typography>
