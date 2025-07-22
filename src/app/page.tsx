@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import LoginPage from "./login/page";
 import Explore from "./explore/page";
 import theme from "./theme";
-import Navbar from "./components/Navbar";
+import { Navbar } from "./components/Navbar";
 import { Container, Box, Typography, Button, Grid, Card, CardContent, Avatar, Link } from "@mui/material";
 import Image from "next/image";
 import tela1 from "@/assets/tela1.png";
@@ -31,7 +31,7 @@ const memoriais = [
 export default function Home() {
   return (
     <>
-    <Navbar></Navbar>
+    <Navbar paginaAtual={"Início - Bem-vindo"}/>
       {/* Hero Section */}
       <Box
         sx={{
@@ -54,9 +54,12 @@ export default function Home() {
           <Typography variant="body1" sx={{ color: "white", mt: 2 }}>
             Crie memoriais, explore homenagens de outras pessoas e mantenha vivas as lembranças de quem continua presente nos corações de quem fica.
           </Typography>
-          <Button variant="contained" sx={{ mt: 4, bgcolor: "#6A8DFF" }}>
-            + CRIAR UM MEMORIAL
-          </Button>
+          <Link href="/createMemorial">
+            <Button variant="contained" sx={{ mt: 4, bgcolor: "#6A8DFF" }}>
+              + CRIAR UM MEMORIAL
+            </Button>
+          </Link>
+
         </Container>
       </Box>
 

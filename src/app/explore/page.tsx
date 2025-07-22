@@ -1,6 +1,6 @@
 "use client";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
-import Navbar from "../components/Navbar";
+import { Box, Button, Container, Grid, Link, Typography } from "@mui/material";
+import { Navbar } from "../components/Navbar";
 import { ReactNode } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { CardProfile } from "../components/CardProfile";
@@ -8,7 +8,7 @@ import { CardProfile } from "../components/CardProfile";
 export default function Explore() {
   return (
     <Box bgcolor='#FDFAF6' sx={{paddingTop: 12, minHeight: '100vh', maxHeight: '100%'}}>
-      <Navbar />
+      <Navbar paginaAtual="Explorar"/>
 
       <Container maxWidth='md' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', textAlign: 'center', gap: 1 }}>
         <Typography variant="h4">
@@ -20,7 +20,9 @@ export default function Explore() {
           Mantenha viva a lembrança de quem marcou vidas.
         </Typography>
 
-        <Button variant="contained" color="secondary" sx={{ color: 'white', marginTop: 2 }} startIcon={<AddIcon />}>Criar memorial</Button>
+        <Link href="/createMemorial">
+          <Button variant="contained" color="secondary" sx={{ color: 'white', marginTop: 2 }} startIcon={<AddIcon />}>Criar memorial</Button>
+        </Link>
       </Container>
 
       <Container maxWidth="xl"

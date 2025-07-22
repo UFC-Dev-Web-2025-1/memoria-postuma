@@ -3,7 +3,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-export default function Navbar() {
+interface NavbarProps {
+  // por enquanto manterei o controle da pagina atual apenas por uma prop de string
+  paginaAtual: string
+}
+
+export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ bgcolor: '#3C68AE' }}>
@@ -17,7 +22,7 @@ export default function Navbar() {
             <MenuIcon sx={{ color: 'white' }} />
           </IconButton>
           <Typography color="white" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Explorar
+            {paginaAtual}
           </Typography>
 
           <Box sx={{ display: 'flex' }}>
