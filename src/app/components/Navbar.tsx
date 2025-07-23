@@ -1,14 +1,100 @@
-import { AppBar, Avatar, Badge, Box, Button, IconButton, Link, MenuItem, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Badge, Box, Button, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+
+import * as React from 'react';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+
+// icones do menu
+import HomeIcon from '@mui/icons-material/Home';
+import StyleIcon from '@mui/icons-material/Style';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import InputIcon from '@mui/icons-material/Input';
+import Link from "next/link";
 
 interface NavbarProps {
   // por enquanto manterei o controle da pagina atual apenas por uma prop de string
   paginaAtual: string
 }
 
-export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
+export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+      <List>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              <Avatar
+                alt="Augusto Lima"
+                src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                sx={{ width: 56, height: 56 }}
+              />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <Typography variant="body1">
+              Augusto Lima
+            </Typography>
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <Typography variant="body2">
+              Cadastrado há dois meses
+            </Typography>
+          </ListItemButton>
+        </ListItem>
+
+      </List>
+      <Divider />
+      <List>
+        {itemsDoMenu.map((item) => (
+          <ListItem key={item.nome} disablePadding>
+
+            <Link href={item.rota}>
+              <ListItemButton>
+                <ListItemIcon>
+                  {item.icone}
+                </ListItemIcon>
+                <ListItemText primary={item.nome} />
+              </ListItemButton>
+            </Link>
+          </ListItem>
+        ))}
+
+        <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+
+            <Link href={"/"}>
+              <ListItemButton>
+                <ListItemText primary={'Sair'} />
+                <ListItemIcon sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <InputIcon />
+                </ListItemIcon>
+              </ListItemButton>
+            </Link>
+          </ListItem>
+      </List>
+    </Box>
+  );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed" sx={{ bgcolor: '#3C68AE' }}>
@@ -18,6 +104,7 @@ export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
             edge="start"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={toggleDrawer(true)}
           >
             <MenuIcon sx={{ color: 'white' }} />
           </IconButton>
@@ -61,6 +148,44 @@ export const Navbar:React.FC<NavbarProps> = ( { paginaAtual } ) => {
 
         </Toolbar>
       </AppBar>
+      <Drawer open={open} onClose={toggleDrawer(false)}>
+        {DrawerList}
+      </Drawer>
+
     </Box>
   )
 }
+
+interface item {
+  nome: string,
+  icone: React.JSX.Element,
+  rota: string
+}
+
+const itemsDoMenu: item[] = [
+  {
+    nome: 'Início',
+    icone: <HomeIcon />,
+    rota: '/home'
+  },
+  {
+    nome: 'Explorar',
+    icone: <StyleIcon />,
+    rota: '/explore'
+  },
+  {
+    nome: 'Meus memoriais',
+    icone: <DynamicFeedIcon />,
+    rota: "/home"
+  },
+  {
+    nome: 'Memoriais favoritos',
+    icone: <FavoriteIcon />,
+    rota: "/home"
+  },
+  {
+    nome: 'Notificações',
+    icone: <NotificationsIcon />,
+    rota: "/home"
+  }
+]
