@@ -1,0 +1,69 @@
+{
+  "kind": "collectionType",
+  "collectionName": "memorials",
+  "info": {
+    "singularName": "memorial",
+    "pluralName": "memorials",
+    "displayName": "Memorial"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nome": {
+      "type": "string"
+    },
+    "historia": {
+      "type": "richtext"
+    },
+    "cidade": {
+      "type": "string"
+    },
+    "data_nascimento": {
+      "type": "date"
+    },
+    "data_falecimento": {
+      "type": "date"
+    },
+    "foto_capa": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "foto_perfil": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "fotos_memorial": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "autor": {
+      "type": "email"
+    },
+    "contato_autor": {
+      "type": "string"
+    },
+    "nome_autor": {
+      "type": "string"
+    }
+  }
+}

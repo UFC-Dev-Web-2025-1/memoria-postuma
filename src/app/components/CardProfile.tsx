@@ -50,11 +50,30 @@ interface CardProfileProps {
   descricao: string,
   nascimento: string,
   falecimento: string,
-  imagemMemorial: string
+  imagemMemorial: any
 }
 
 export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nascimento, falecimento, imagemMemorial }) => {
 
+  function limitarPalavras(text: string, wordLimit: number): string {
+    const words = text.split(' ')
+    if (words.length <= wordLimit) return text
+    return words.slice(0, wordLimit).join(' ') + '...'
+  }
+
+  function formatacaoData(dateString: string): string {
+    const date = new Date(dateString)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+
+    return `${day}/${month}/${year}`
+  }
+
+  React.useEffect(() => {
+    console.log(imagemMemorial)
+  }, [])
+  
   return (
     <Card sx={{
       maxWidth: 'auto', minWidth: 260, display: 'flex', flexDirection: 'column'
@@ -69,7 +88,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
       >
         <CardMedia
           component="img"
-          image={imagemMemorial}
+          // image={imagemMemorial.formats.thumbnail.url}
           alt="Avatar icon"
           sx={{
             display: 'flex',
@@ -85,7 +104,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
           </Typography>
 
           <Typography variant="subtitle2" sx={{ color: 'text.secondary', maxWidth: 170 }}>
-            {descricao}
+            {limitarPalavras(descricao, 10)}
           </Typography>
 
           <Box sx={{
@@ -93,8 +112,8 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
             flexDirection: 'row',
             gap: 2
           }}>
-            <DateLifeInfo type='birth' date={nascimento} />
-            <DateLifeInfo type='death' date={falecimento} />
+            <DateLifeInfo type='birth' date={formatacaoData(nascimento)} />
+            <DateLifeInfo type='death' date={formatacaoData(falecimento)} />
           </Box>
         </Box>
       </CardContent>

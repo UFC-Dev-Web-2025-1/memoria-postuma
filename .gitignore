@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/api/backend/node_modules
+/src/api/backend/.strapi
+/src/api/backend/.tmp
+/src/api/backend/dist
