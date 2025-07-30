@@ -1,5 +1,12 @@
 export default [
   'strapi::logger',
+  {
+    name: 'strapi::cors',
+    config: {
+      origin: ['http://localhost:3000'], // frontend
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    },
+  },
   'strapi::errors',
   'strapi::security',
   'strapi::cors',
