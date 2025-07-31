@@ -7,6 +7,8 @@ import AddIcon from '@mui/icons-material/Add'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { CardMemorialHome } from "../components/CardMemorialHome";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const memoriais = [
   {
@@ -27,6 +29,28 @@ const memoriais = [
 ];
 
 export default function Home() {
+
+  const API_URL = 'http://localhost:1337'
+  const [memorials, setMemorials] = useState<Memorial[]>([])
+
+  async function getDisplayMemorials(): Promise<Memorial[]> {
+    try {
+      const res = await axios.get(`${API_URL}/api/memorials?pagination[limit]=3&populate=*`)
+      const data = res.data
+
+      // console.log(data.data[0].foto_capa.formats.thumbnail.url)
+      return data.data as Memorial[]
+    } catch (err) {
+      console.error('Erro ao buscar memorials:', err)
+      return []
+    }
+  }
+
+
+  useEffect(() => {
+    getDisplayMemorials().then(setMemorials)
+  }, [])
+
   return (
     <Box bgcolor='#FDFAF6' >
       <Navbar paginaAtual={"Início - Bem-vindo"} />
@@ -78,8 +102,8 @@ export default function Home() {
           width: '100%'
         }}>
           {
-            memoriais.map((memorial) => (
-              <CardMemorialHome key={Math.random()} nome={memorial.nome} fotoMemorial={memorial.foto} mensagem={memorial.descricao} />
+            memorials.map((memorial) => (
+              <CardMemorialHome key={memorial.id} nome={memorial.nome} fotoMemorial={memorial.foto_perfil} mensagem={memorial.historia} />
             ))
           }
         </Box>

@@ -1,17 +1,3 @@
-type Thumbnail = {
-  url: string
-}
-
-type Formats = {
-  thumbnail: Thumbnail
-}
-
-type Foto = {
-  id: number,
-  documentId: string,
-  formats: Formats,
-}
-
 type Memorial = {
   id: number,
   nome: string,
@@ -19,9 +5,9 @@ type Memorial = {
   cidade: string,
   data_nascimento: string,
   data_falecimento: string,
-  foto_capa: string,
-  foto_perfil: Foto,
-  fotos_memorial: string[],
+  foto_capa: any,
+  foto_perfil: any,
+  fotos_memorial: any,
   autor: string,
   contato_autor: string
 }

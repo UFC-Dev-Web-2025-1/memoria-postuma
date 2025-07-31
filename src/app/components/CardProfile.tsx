@@ -18,6 +18,8 @@ import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
 import { Box, Button } from '@mui/material';
 import Link from 'next/link';
+import axios from 'axios';
+import { API_URL, formatacaoData, limitarPalavras } from '@/utils/texts';
 
 interface DateLifeInfoProps {
   type: string,
@@ -55,25 +57,12 @@ interface CardProfileProps {
 
 export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nascimento, falecimento, imagemMemorial }) => {
 
-  function limitarPalavras(text: string, wordLimit: number): string {
-    const words = text.split(' ')
-    if (words.length <= wordLimit) return text
-    return words.slice(0, wordLimit).join(' ') + '...'
-  }
-
-  function formatacaoData(dateString: string): string {
-    const date = new Date(dateString)
-    const day = String(date.getDate()).padStart(2, '0')
-    const month = String(date.getMonth() + 1).padStart(2, '0')
-    const year = date.getFullYear()
-
-    return `${day}/${month}/${year}`
-  }
+  const [imagemPerfil, setImagemPerfil] = React.useState<string>('')
 
   React.useEffect(() => {
-    console.log(imagemMemorial)
+    setImagemPerfil(`${API_URL}${imagemMemorial?.formats?.thumbnail?.url}`)
   }, [])
-  
+
   return (
     <Card sx={{
       maxWidth: 'auto', minWidth: 260, display: 'flex', flexDirection: 'column'
@@ -88,7 +77,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
       >
         <CardMedia
           component="img"
-          // image={imagemMemorial.formats.thumbnail.url}
+          image={imagemPerfil}
           alt="Avatar icon"
           sx={{
             display: 'flex',
