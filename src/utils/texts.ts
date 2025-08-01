@@ -35,3 +35,26 @@ function capitalize(text: string): string {
 export const getImagemMemorial = (diretorioImagem: any) => {
   return `${API_URL}${diretorioImagem?.formats?.thumbnail?.url}`
 }
+
+export function tempoDesde(dataISO: string | undefined): string {
+  if (dataISO != undefined) {
+    const data = new Date(dataISO);
+    const agora = new Date();
+    const diffMs = agora.getTime() - data.getTime();
+  
+    const segundos = Math.floor(diffMs / 1000);
+    const minutos = Math.floor(segundos / 60);
+    const horas = Math.floor(minutos / 60);
+    const dias = Math.floor(horas / 24);
+    const meses = Math.floor(dias / 30);
+    const anos = Math.floor(dias / 365);
+  
+    if (segundos < 60) return `há ${segundos} segundo${segundos !== 1 ? 's' : ''}`;
+    if (minutos < 60) return `há ${minutos} minuto${minutos !== 1 ? 's' : ''}`;
+    if (horas < 24) return `há ${horas} hora${horas !== 1 ? 's' : ''}`;
+    if (dias < 30) return `há ${dias} dia${dias !== 1 ? 's' : ''}`;
+    if (meses < 12) return `há ${meses} mês${meses !== 1 ? 'es' : ''}`;
+    return `${anos} ano${anos !== 1 ? 's' : ''}`;
+  }
+  return ''
+}

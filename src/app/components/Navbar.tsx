@@ -21,6 +21,7 @@ import InputIcon from '@mui/icons-material/Input';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authService } from "@/utils/auth";
+import { tempoDesde } from "@/utils/texts";
 
 interface NavbarProps {
   // por enquanto manterei o controle da pagina atual apenas por uma prop de string
@@ -36,7 +37,18 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
     setOpen(newOpen);
   };
 
-  const DrawerList = (
+  const [usuarioInfos, setUsuarioInfos] = React.useState<User>()
+
+  React.useEffect(() => {
+    if (localStorage.getItem('user') != null) {
+      const userObj = localStorage.getItem('user')
+      if (userObj) {
+        setUsuarioInfos(JSON.parse(userObj) as User)
+      }
+    }
+  }, [])
+
+  const DrawerList = (    
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
 
@@ -44,8 +56,8 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
           <ListItemButton>
             <ListItemIcon>
               <Avatar
-                alt="Augusto Lima"
-                src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                alt={usuarioInfos?.username}
+                // src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
                 sx={{ width: 56, height: 56 }}
               />
             </ListItemIcon>
@@ -55,7 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
         <ListItem disablePadding>
           <ListItemButton>
             <Typography variant="body1">
-              Augusto Lima
+              { usuarioInfos?.username }
             </Typography>
           </ListItemButton>
         </ListItem>
@@ -63,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
         <ListItem disablePadding>
           <ListItemButton>
             <Typography variant="body2">
-              Cadastrado há dois meses
+              Cadastrado há {tempoDesde(usuarioInfos?.createdAt)}
             </Typography>
           </ListItemButton>
         </ListItem>
@@ -144,8 +156,8 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
                 size="small"
               >
                 <Avatar
-                  alt="Foto de perfil"
-                  src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                  alt={usuarioInfos?.username}
+                  // src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
                   sx={{ width: 45, height: 45 }}
                 />
               </IconButton>

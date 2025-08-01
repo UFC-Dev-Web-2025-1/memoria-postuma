@@ -9,28 +9,11 @@ import { CardMemorialHome } from "../components/CardMemorialHome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-const memoriais = [
-  {
-    nome: "João Rocha",
-    descricao: "João Rocha foi um homem simples e generoso...",
-    foto: "https://conteudo.imguol.com.br/c/entretenimento/1e/2021/01/29/idoso-negro-1611935501059_v2_450x450.jpg",
-  },
-  {
-    nome: "Pedro Aurelio",
-    descricao: "Homem de coração generoso e sorriso fácil. Amava a vida...",
-    foto: "https://botatende.com.br/wp-content/uploads/2023/10/Perf-2-1024x1024.webp",
-  },
-  {
-    nome: "Maria Antonia",
-    descricao: "Era aquela pessoa que fazia questão de ouvir, cuidar...",
-    foto: "https://revitalizeweightloss.com/wp-content/uploads/2023/11/testimonial-slider_1.png",
-  },
-];
+import { AuthLayout } from "../authLayout";
+import { API_URL } from "@/utils/texts";
 
 export default function Home() {
 
-  const API_URL = 'http://localhost:1337'
   const [memorials, setMemorials] = useState<Memorial[]>([])
 
   async function getDisplayMemorials(): Promise<Memorial[]> {
