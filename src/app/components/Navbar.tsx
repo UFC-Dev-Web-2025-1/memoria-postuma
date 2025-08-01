@@ -38,19 +38,38 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
   };
 
   const [usuarioInfos, setUsuarioInfos] = React.useState<User>()
+  const [logado, setLogado] = React.useState<boolean>()
 
-  React.useEffect(() => {
-    if (localStorage.getItem('user') != null) {
-      const userObj = localStorage.getItem('user')
-      if (userObj) {
-        setUsuarioInfos(JSON.parse(userObj) as User)
+  const handleExibir = (role: Role) => {
+    if (Role.NAO_AUTENTICADO === role) {
+      return true
+    } else {
+      if (logado) {
+        return true
+      } else {
+        return false
       }
     }
+  }
+
+  React.useEffect(() => {
+    if (authService.isAuthenticated()) {
+      setLogado(true)
+      if (localStorage.getItem('user') != null) {
+        const userObj = localStorage.getItem('user')
+        if (userObj) {
+          setUsuarioInfos(JSON.parse(userObj) as User)
+        }
+      }
+    } else {
+      setLogado(false)
+    }
+
   }, [])
 
   const DrawerList = (    
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
+      <List sx={{ display: (logado)?'':'none' }}>
 
         <ListItem disablePadding>
           <ListItemButton>
@@ -64,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding>
+        <ListItem disablePadding >
           <ListItemButton>
             <Typography variant="body1">
               { usuarioInfos?.username }
@@ -84,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
       <Divider />
       <List>
         {itemsDoMenu.map((item) => (
-          <ListItem key={item.nome} disablePadding>
+          <ListItem key={item.nome} sx={{display: (handleExibir(item.role)?'flex':'none')}}  disablePadding>
 
             <Link href={item.rota}>
               <ListItemButton>
@@ -99,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
 
         <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 
-          <ListItemButton onClick={async () => {
+          <ListItemButton sx={{ display: (logado)?'flex':'none' }} onClick={async () => {
             authService.logout()
             router.push('/login')
           }}>
@@ -130,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
             {paginaAtual}
           </Typography>
 
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: (logado)?'flex':'none' }}>
             <MenuItem sx={{ padding: 1 }}>
               <IconButton
                 size="small"
@@ -164,6 +183,21 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
             </MenuItem>
           </Box>
 
+          <Box sx={{ display: (logado)?'none':'flex' }}>
+            <MenuItem sx={{ padding: 1 }}>
+            <Link href={'/register'}>
+              <Button color="warning" sx={{color: '#3C68AE'}} variant="contained">Registrar-se</Button>
+            </Link>
+            </MenuItem>
+
+            <MenuItem sx={{ padding: 1 }}>
+              <Link href={'/login'}>
+                <Button color="warning" variant="outlined">Entrar</Button>
+              </Link>
+            </MenuItem>
+
+          </Box>
+
         </Toolbar>
       </AppBar>
       <Drawer open={open} onClose={toggleDrawer(false)}>
@@ -177,33 +211,44 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
 interface item {
   nome: string,
   icone: React.JSX.Element,
-  rota: string
+  rota: string,
+  role: Role
+}
+
+enum Role {
+  NAO_AUTENTICADO,
+  AUTENTICADO
 }
 
 const itemsDoMenu: item[] = [
   {
     nome: 'Início',
     icone: <HomeIcon />,
-    rota: '/home'
+    rota: '/home',
+    role: Role.NAO_AUTENTICADO
   },
   {
     nome: 'Explorar',
     icone: <StyleIcon />,
-    rota: '/explore'
+    rota: '/explore',
+    role: Role.NAO_AUTENTICADO
   },
   {
     nome: 'Meus memoriais',
     icone: <DynamicFeedIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   },
   {
     nome: 'Memoriais favoritos',
     icone: <FavoriteIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   },
   {
     nome: 'Notificações',
     icone: <NotificationsIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   }
 ]

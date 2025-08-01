@@ -75,7 +75,7 @@ export default function LoginPage() {
 
   return (
     <Box sx={authStyles.container}>
-      <Paper elevation={3} sx={{ ...authStyles.paper, height: alert ? 600 : 550 }}>
+      <Paper elevation={3} sx={{ ...authStyles.paper, height: 'auto' }}>
         <Typography variant="h4" sx={authStyles.title}>
           Entrar
         </Typography>
@@ -164,6 +164,14 @@ export default function LoginPage() {
         >
           {googleLoading ? 'ENTRANDO...' : 'ENTRAR COM GOOGLE'}
         </Button>
+
+        <Divider sx={authStyles.divider}></Divider>
+
+        <Typography sx={authStyles.subtitle}>
+          <Link href="/home" sx={authStyles.link}>
+            Continuar sem entrar
+          </Link>
+        </Typography>
       </Paper>
     </Box>
   );
