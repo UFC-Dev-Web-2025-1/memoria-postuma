@@ -6,11 +6,15 @@ import ChurchIcon from '@mui/icons-material/Church';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TurnedInNotIcon from '@mui/icons-material/TurnedInNot';
 import ShareIcon from '@mui/icons-material/Share';
-import DetailsTab from "../../components/DetailsTab";
+import {DetailsTab} from "../../components/DetailsTab";
+import { API_URL, formatacaoDataPorExtensa } from "@/utils/texts";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface DateLifeInfoProps {
   type: string,
-  date: string,
+  date: string | undefined,
   size?: number
 }
 
@@ -35,6 +39,40 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date, size }) => {
 }
 
 export default function ExploreDetails() {
+  const searchParams = useSearchParams()
+  const id = searchParams.get('id')
+
+  const [memorial, setMemorial] = useState<Memorial>()
+  let imagensPublicadas: string[] = []
+
+  async function getMemorial() {
+    try {
+      const res = await axios.get(`${API_URL}/api/memorials/${id}?populate=*`)
+      const data: Memorial = res.data.data
+
+      setMemorial(data)
+      // console.log(memorial)
+
+      // puxando as imagens publicadas
+      if (data != undefined) {
+        data.fotos_memorial.map((foto: any) => {
+          imagensPublicadas.push(getImagemMemorial(foto))
+        })
+      }
+
+    } catch (err) {
+      console.error('Erro ao buscar memorial pelo id:', err)
+    }
+  }
+
+  const getImagemMemorial = (diretorioImagem: any) => {
+    return `${API_URL}${diretorioImagem?.formats?.thumbnail?.url}`
+  }
+
+  useEffect(() => {
+    getMemorial()
+  }, [])
+
   return (
     <Box bgcolor='#FDFAF6' sx={{paddingTop: 7}}>
       <Navbar paginaAtual="Explorar memorial"/>
@@ -53,7 +91,7 @@ export default function ExploreDetails() {
           flexDirection: 'column'
         }}>
           <Box>
-            <img src={itemData.img} width={'100%'} height={300} />
+            <img src={getImagemMemorial(memorial?.foto_capa)} width={'100%'} height={300} />
           </Box>
 
           <Box sx={{
@@ -66,8 +104,8 @@ export default function ExploreDetails() {
             gap: 5
           }}>
             <Avatar
-              alt="Remy Sharp"
-              src="https://conteudo.imguol.com.br/c/entretenimento/1e/2021/01/29/idoso-negro-1611935501059_v2_450x450.jpg"
+              alt="Foto do memorial"
+              src={getImagemMemorial(memorial?.foto_perfil)}
               sx={{ width: 200, height: 200 }}
             />
 
@@ -82,7 +120,7 @@ export default function ExploreDetails() {
               </Typography>
 
               <Typography variant="h6" fontWeight={'bold'} >
-                João Rocha de Almeida
+                {memorial?.nome}
               </Typography>
 
               <Box sx={{
@@ -91,8 +129,8 @@ export default function ExploreDetails() {
                 gap: 1,
                 marginTop: 1
               }}>
-                <DateLifeInfo type="birth" date="12 de Fevereiro de 1987" />
-                <DateLifeInfo type="death" date="28 de Novembro de 2014" />
+                <DateLifeInfo type="birth" date={formatacaoDataPorExtensa(memorial?.data_nascimento)} />
+                <DateLifeInfo type="death" date={formatacaoDataPorExtensa(memorial?.data_falecimento)} />
               </Box>
 
             </Box>
@@ -119,7 +157,7 @@ export default function ExploreDetails() {
         </Box>
 
         <Box>
-          <DetailsTab />
+          <DetailsTab historia={memorial?.historia} fotos_memorial={imagensPublicadas} id={(id === null)?'id nao alocado':id} />
         </Box>
       </Container>
 

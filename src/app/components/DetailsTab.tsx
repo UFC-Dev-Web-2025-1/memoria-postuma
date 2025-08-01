@@ -6,7 +6,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import MemoriesImages from './MemoriesImages';
+import { MemoriesImages } from './MemoriesImages';
+import { getImagemMemorial } from '@/utils/texts';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -49,7 +50,13 @@ function a11yProps(index: number) {
   };
 }
 
-export default function DetailsTab() {
+interface DetailsTabProps {
+  fotos_memorial: string[],
+  historia: string | undefined,
+  id: string
+}
+
+export const DetailsTab: React.FC<DetailsTabProps> = ({ fotos_memorial, historia, id }) => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -73,15 +80,11 @@ export default function DetailsTab() {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0} dir={theme.direction}>
-        <MemoriesImages />
+        <MemoriesImages id={id} />
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
         <Typography sx={{paddingX: 5}}>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quam nesciunt tempore ipsum adipisci corporis ducimus veritatis, temporibus sapiente obcaecati quis voluptate magni. Saepe inventore dolor quas tempore, est obcaecati cum vitae suscipit sapiente optio velit culpa alias repellendus magni praesentium consequatur animi consectetur beatae qui commodi? Nisi eos soluta repellendus numquam praesentium iusto provident et laboriosam velit! Nobis at quidem optio necessitatibus, commodi aperiam molestiae itaque culpa reprehenderit aut, consequatur eligendi temporibus ad voluptate. Qui laborum veritatis dolor ducimus iure, nobis quam excepturi necessitatibus ipsam, corporis laudantium minima. Dignissimos velit laborum perspiciatis pariatur in alias quo molestias facilis possimus deleniti?
-        </Typography>
-
-        <Typography sx={{paddingX: 5}}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente deserunt, necessitatibus laboriosam quibusdam saepe minima numquam ipsum corrupti beatae in obcaecati ex neque ut repellat facere magni libero. Molestias velit, explicabo nam temporibus odio ab ullam molestiae sit vel optio, minima pariatur magnam cupiditate labore! Tempora est, quibusdam magni architecto at saepe commodi laboriosam! Non repellendus minima, assumenda quibusdam rerum amet ab tenetur eum numquam nesciunt officiis tempore a voluptatibus magnam quis. Maiores incidunt modi voluptas odit perferendis! Consequuntur nisi, facilis error in voluptas praesentium qui quibusdam est, ullam ratione consequatur culpa modi non numquam placeat repudiandae? Harum possimus magnam quidem beatae architecto amet officia, fugiat accusamus laboriosam! Rem veritatis recusandae quae sint tenetur? Esse vel explicabo doloribus consequuntur odio molestiae, dolores repellat?
+          { historia }
         </Typography>
       </TabPanel>
     </Box>

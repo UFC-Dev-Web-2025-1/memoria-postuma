@@ -17,6 +17,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
 import { Box, Button } from '@mui/material';
+import { API_URL, limitarPalavras } from '@/utils/texts';
 
 interface DateLifeInfoProps {
   type: string,
@@ -45,12 +46,19 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date }) => {
 }
 
 interface CardMemorialHomeProps {
-  fotoMemorial: string,
+  fotoMemorial: any,
   mensagem: string,
-  nome: string
+  nome: string,
+  documentId: string
 }
 
-export const CardMemorialHome:React.FC<CardMemorialHomeProps> = ( { fotoMemorial, mensagem, nome } ) => {
+export const CardMemorialHome: React.FC<CardMemorialHomeProps> = ({ fotoMemorial, mensagem, nome, documentId }) => {
+
+  const [imagemPerfil, setImagemPerfil] = React.useState<string>('')
+
+  React.useEffect(() => {
+    setImagemPerfil(`${API_URL}${fotoMemorial?.formats?.thumbnail?.url}`)
+  }, [])
 
   return (
     <Card sx={{
@@ -66,7 +74,7 @@ export const CardMemorialHome:React.FC<CardMemorialHomeProps> = ( { fotoMemorial
       <CardMedia
         component="img"
         // imagem de exemplo 
-        image={fotoMemorial}
+        image={imagemPerfil}
         alt="Avatar icon"
         sx={{
           display: 'flex',
@@ -85,7 +93,7 @@ export const CardMemorialHome:React.FC<CardMemorialHomeProps> = ( { fotoMemorial
       }}>
 
         <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-          {mensagem}
+          {limitarPalavras(mensagem, 8)}
         </Typography>
 
       </CardContent>
