@@ -48,10 +48,11 @@ const DateLifeInfo: React.FC<DateLifeInfoProps> = ({ type, date }) => {
 interface CardMemorialHomeProps {
   fotoMemorial: any,
   mensagem: string,
-  nome: string
+  nome: string,
+  documentId: string
 }
 
-export const CardMemorialHome: React.FC<CardMemorialHomeProps> = ({ fotoMemorial, mensagem, nome }) => {
+export const CardMemorialHome: React.FC<CardMemorialHomeProps> = ({ fotoMemorial, mensagem, nome, documentId }) => {
 
   const [imagemPerfil, setImagemPerfil] = React.useState<string>('')
 

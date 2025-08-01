@@ -6,10 +6,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { CardProfile } from "../components/CardProfile";
 import Link from "next/link";
 import axios from "axios";
+import { API_URL } from "@/utils/texts";
 
 export default function Explore() {
 
-  const API_URL = 'http://localhost:1337'
   const [memorials, setMemorials] = useState<Memorial[]>([])
 
   async function getMemorials(): Promise<Memorial[]> {
@@ -70,6 +70,7 @@ export default function Explore() {
               nascimento={item.data_nascimento}
               falecimento={item.data_falecimento}
               imagemMemorial={item.foto_perfil}
+              documentId={item.documentId}
             />
           </div>
         ))

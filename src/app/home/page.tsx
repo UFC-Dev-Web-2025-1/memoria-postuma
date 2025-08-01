@@ -103,7 +103,7 @@ export default function Home() {
         }}>
           {
             memorials.map((memorial) => (
-              <CardMemorialHome key={memorial.id} nome={memorial.nome} fotoMemorial={memorial.foto_perfil} mensagem={memorial.historia} />
+              <CardMemorialHome key={memorial.id} nome={memorial.nome} fotoMemorial={memorial.foto_perfil} mensagem={memorial.historia} documentId={memorial.documentId} />
             ))
           }
         </Box>

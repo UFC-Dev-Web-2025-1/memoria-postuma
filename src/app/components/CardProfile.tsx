@@ -52,10 +52,11 @@ interface CardProfileProps {
   descricao: string,
   nascimento: string,
   falecimento: string,
-  imagemMemorial: any
+  imagemMemorial: any,
+  documentId: string
 }
 
-export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nascimento, falecimento, imagemMemorial }) => {
+export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nascimento, falecimento, imagemMemorial, documentId }) => {
 
   const [imagemPerfil, setImagemPerfil] = React.useState<string>('')
 
@@ -109,7 +110,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
 
       <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', paddingTop: 1 }}>
 
-        <Link href="/explore/details">
+        <Link href={{ pathname: '/explore/details', query: { id: documentId } }}>
           <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
         </Link>
 

@@ -14,3 +14,24 @@ export function formatacaoData(dateString: string): string {
 
   return `${day}/${month}/${year}`
 }
+
+export function formatacaoDataPorExtensa(dateString: string | undefined): string {
+  if (dateString != undefined) {
+    const date = new Date(dateString)
+  
+    const day = date.getDate()
+    const month = date.toLocaleString('pt-BR', { month: 'long' })
+    const year = date.getFullYear()
+  
+    return `${day} de ${capitalize(month)} de ${year}`
+  }
+  return ''
+}
+
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+export const getImagemMemorial = (diretorioImagem: any) => {
+  return `${API_URL}${diretorioImagem?.formats?.thumbnail?.url}`
+}

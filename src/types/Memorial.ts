@@ -1,5 +1,6 @@
 type Memorial = {
   id: number,
+  documentId: string,
   nome: string,
   historia: string,
   cidade: string,
