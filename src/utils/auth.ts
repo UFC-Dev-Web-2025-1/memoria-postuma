@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { API_URL } from './texts';
 
 export const cookieUtils = {
   setCookie: (name: string, value: string, days: number = 7) => {
@@ -39,82 +41,57 @@ export const cookieUtils = {
 };
 
 export const authService = {
-  register: async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (!email || !password) {
-          resolve({ success: false, message: "Email e senha são obrigatórios" });
-          return;
-        }
+  async register(username: string, email: string, password: string) {
+    try {
+      const res = await axios.post(`${API_URL}/api/auth/local/register`, {
+        username,
+        email,
+        password
+      });
 
-        if (password.length < 6) {
-          resolve({ success: false, message: "Senha deve ter pelo menos 6 caracteres" });
-          return;
-        }
-
-        const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-        
-        if (users.find((user: any) => user.email === email)) {
-          resolve({ success: false, message: "Usuário já existe com este email" });
-          return;
-        }
-
-        users.push({ email, password, registeredAt: new Date().toISOString() });
-        localStorage.setItem('registeredUsers', JSON.stringify(users));
-
-        resolve({ success: true, message: "Usuário registrado com sucesso!" });
-      }, 1000); 
-    });
+      if (res.data && res.data.user) {
+        return { success: true, message: "Usuário registrado com sucesso!" };
+      } else {
+        return { success: false, message: "Erro inesperado ao registrar." };
+      }
+    } catch (error: any) {
+      const message = error.response?.data?.error?.message || "Erro ao registrar usuário.";
+      return { success: false, message };
+    }
   },
 
-  login: async (email: string, password: string): Promise<{ success: boolean; message: string; user?: any }> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (!email || !password) {
-          resolve({ success: false, message: "Email e senha são obrigatórios" });
-          return;
-        }
+  async login(identifier: string, password: string) {
+    try {
+      const res = await axios.post(`${API_URL}/api/auth/local`, {
+        identifier,
+        password
+      });
 
-        const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-        const user = users.find((u: any) => u.email === email && u.password === password);
+      const { jwt, user } = res.data;
 
-        if (!user) {
-          resolve({ success: false, message: "Email ou senha incorretos" });
-          return;
-        }
+      // salvar no localStorage
+      localStorage.setItem('token', jwt);
+      localStorage.setItem('user', JSON.stringify(user));
 
-        const sessionData = {
-          email: user.email,
-          loginTime: new Date().toISOString(),
-          sessionId: Math.random().toString(36).substr(2, 9)
-        };
-
-        cookieUtils.setCookie('userSession', JSON.stringify(sessionData), 7);
-
-        resolve({ success: true, message: "Login realizado com sucesso!", user: sessionData });
-      }, 1000);
-    });
+      return { success: true, message: 'Login realizado com sucesso!', user };
+    } catch (error: any) {
+      const message = error.response?.data?.error?.message || 'Erro ao fazer login.';
+      return { success: false, message };
+    }
   },
 
-  loginWithGoogle: async (): Promise<{ success: boolean; message: string; user?: any }> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const googleUser = {
-          email: "usuario@gmail.com",
-          name: "Usuário Google",
-          loginTime: new Date().toISOString(),
-          sessionId: Math.random().toString(36).substr(2, 9),
-          provider: 'google'
-        };
-
-        cookieUtils.setCookie('userSession', JSON.stringify(googleUser), 7);
-
-        resolve({ success: true, message: "Login com Google realizado com sucesso!", user: googleUser });
-      }, 1500);
-    });
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   },
 
-  logout: () => {
-    cookieUtils.deleteCookie('userSession');
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  },
+
+  getUser() {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   }
+  
 };

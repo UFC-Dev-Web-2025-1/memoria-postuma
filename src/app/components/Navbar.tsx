@@ -1,3 +1,4 @@
+"use client"
 import { AppBar, Avatar, Badge, Box, Button, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -18,6 +19,8 @@ import StyleIcon from '@mui/icons-material/Style';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import InputIcon from '@mui/icons-material/Input';
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authService } from "@/utils/auth";
 
 interface NavbarProps {
   // por enquanto manterei o controle da pagina atual apenas por uma prop de string
@@ -25,6 +28,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
+  const router = useRouter();
+
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -82,15 +87,16 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
 
         <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 
-            <Link href={"/"}>
-              <ListItemButton>
-                <ListItemText primary={'Sair'} />
-                <ListItemIcon sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <InputIcon />
-                </ListItemIcon>
-              </ListItemButton>
-            </Link>
-          </ListItem>
+          <ListItemButton onClick={async () => {
+            authService.logout()
+            router.push('/login')
+          }}>
+            <ListItemText primary={'Sair'} />
+            <ListItemIcon sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <InputIcon />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
