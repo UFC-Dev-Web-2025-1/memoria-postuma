@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Link from 'next/link';
 import axios from 'axios';
 import { API_URL } from '@/utils/texts';
+import { AuthLayout } from '../authLayout';
 
 interface LabelFormProps {
   label: string
@@ -125,161 +126,164 @@ export default function CreateMemorial() {
 
 
   return (
-    <Box bgcolor='#FDFAF6' sx={{ paddingTop: 12, minHeight: '100vh', maxHeight: '100%' }}>
-      <Navbar paginaAtual="Criar memorial" />
+    <AuthLayout>
 
-      <Container maxWidth='md' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
-        <Typography variant="h4">
-          Criar um novo memorial
-        </Typography>
+      <Box bgcolor='#FDFAF6' sx={{ paddingTop: 12, minHeight: '100vh', maxHeight: '100%' }}>
+        <Navbar paginaAtual="Criar memorial" />
 
-        <Typography variant="body1" textAlign={'center'}>
-          Preencha os campos para criar um memorial personalizado.
-          Adicione fotos, datas marcantes e uma biografia que compartilhe momentos especiais dessa vida.
-          Você poderá atualizar as informações sempre que quiser.
-        </Typography>
+        <Container maxWidth='md' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
+          <Typography variant="h4">
+            Criar um novo memorial
+          </Typography>
 
-        <Box
-          component="form"
-          sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
-          noValidate
-          autoComplete="off"
-        >
-          <LabelForm label="Dados pessoais" />
-          <DivInputs>
-            <TextField label="Nome do ente querido" id="outlined-size-normal" color="primary" focused onChange={(e) => setNome(e.target.value)} />
-            <TextField label="Cidade" id="outlined-size-normal" color="primary" focused onChange={(e) => setCidade(e.target.value)} />
-          </DivInputs>
-          <DivInputs>
-            <Button
-              component="label"
-              role={undefined}
-              variant="outlined"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              {fotoPerfil ? 'Alterar foto de perfil' : 'Foto de perfil'}
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={(event) => {
-                  const file = event.target.files?.[0]
-                  if (file) {
-                    setFotoPerfil(file)
-                    setPreviewFotoPerfil(URL.createObjectURL(file))
-                  }
+          <Typography variant="body1" textAlign={'center'}>
+            Preencha os campos para criar um memorial personalizado.
+            Adicione fotos, datas marcantes e uma biografia que compartilhe momentos especiais dessa vida.
+            Você poderá atualizar as informações sempre que quiser.
+          </Typography>
+
+          <Box
+            component="form"
+            sx={{ '& .MuiTextField-root': { m: 1, width: '40ch' } }}
+            noValidate
+            autoComplete="off"
+          >
+            <LabelForm label="Dados pessoais" />
+            <DivInputs>
+              <TextField label="Nome do ente querido" id="outlined-size-normal" color="primary" focused onChange={(e) => setNome(e.target.value)} />
+              <TextField label="Cidade" id="outlined-size-normal" color="primary" focused onChange={(e) => setCidade(e.target.value)} />
+            </DivInputs>
+            <DivInputs>
+              <Button
+                component="label"
+                role={undefined}
+                variant="outlined"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                {fotoPerfil ? 'Alterar foto de perfil' : 'Foto de perfil'}
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (file) {
+                      setFotoPerfil(file)
+                      setPreviewFotoPerfil(URL.createObjectURL(file))
+                    }
+                  }}
+                />
+              </Button>
+              {previewFotoPerfil && (
+                <img
+                  src={previewFotoPerfil}
+                  alt="Preview foto de perfil"
+                  style={{ maxHeight: 150, borderRadius: 8, marginTop: 8 }}
+                />
+              )}
+
+              <Button
+                component="label"
+                role={undefined}
+                variant="outlined"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+              >
+                {fotoCapa ? 'Alterar foto de capa' : 'Foto de capa'}
+                <VisuallyHiddenInput
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (file) {
+                      setFotoCapa(file)
+                      setPreviewFotoCapa(URL.createObjectURL(file))
+                    }
+                  }}
+                />
+              </Button>
+
+              {previewFotoCapa && (
+                <img
+                  src={previewFotoCapa}
+                  alt="Preview foto de capa"
+                  style={{ maxHeight: 150, borderRadius: 8, marginTop: 8 }}
+                />
+              )}
+
+            </DivInputs>
+
+            <LabelForm label="Vida" />
+            <DivInputs>
+              <TextField label="Data de nascimento" id="outlined-size-normal" color="primary" focused type='date' value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
+              <TextField label="Data de falecimento" id="outlined-size-normal" color="primary" focused type='date' value={dataFalecimento} onChange={(e) => setDataFalecimento(e.target.value)} />
+            </DivInputs>
+            <DivInputs>
+              <TextField
+                label="História"
+                multiline
+                rows={4}
+                focused
+                onChange={(e) => setHistoria(e.target.value)}
+              />
+            </DivInputs>
+
+            <DivInputs>
+              <Button
+                component="label"
+                role={undefined}
+                variant="outlined"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+                onChange={(e) => {
+                  const input = e.target as HTMLInputElement
+                  const files = input.files
+                  if (files) setFotosMemorial(Array.from(files))
                 }}
-              />
-            </Button>
-            {previewFotoPerfil && (
-              <img
-                src={previewFotoPerfil}
-                alt="Preview foto de perfil"
-                style={{ maxHeight: 150, borderRadius: 8, marginTop: 8 }}
-              />
-            )}
+              >
+                Imagens
+                <VisuallyHiddenInput
+                  type="file"
+                  onChange={(event) => console.log(event.target.files)}
+                  multiple
+                />
+              </Button>
 
-            <Button
-              component="label"
-              role={undefined}
-              variant="outlined"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              {fotoCapa ? 'Alterar foto de capa' : 'Foto de capa'}
-              <VisuallyHiddenInput
-                type="file"
-                accept="image/*"
-                onChange={(event) => {
-                  const file = event.target.files?.[0]
-                  if (file) {
-                    setFotoCapa(file)
-                    setPreviewFotoCapa(URL.createObjectURL(file))
-                  }
-                }}
-              />
-            </Button>
+              {fotosMemorial.length > 0 && (
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
+                  {fotosMemorial.map((file, i) => (
+                    <img
+                      key={i}
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${i}`}
+                      style={{ height: 100, borderRadius: 4 }}
+                    />
+                  ))}
+                </Box>
+              )}
 
-            {previewFotoCapa && (
-              <img
-                src={previewFotoCapa}
-                alt="Preview foto de capa"
-                style={{ maxHeight: 150, borderRadius: 8, marginTop: 8 }}
-              />
-            )}
+            </DivInputs>
 
-          </DivInputs>
+            <LabelForm label="Dados do responsável" />
+            <DivInputs>
+              <TextField label="Nome do responsável" id="outlined-size-normal" color="primary" focused onChange={(e) => setNomeAutor(e.target.value)} />
+              <TextField label="Contato do responsável" id="outlined-size-normal" color="primary" focused onChange={(e) => setContatoAutor(e.target.value)} />
+            </DivInputs>
+            <DivInputs>
+              <TextField label="E-mail" id="outlined-size-normal" color="primary" focused type='email' onChange={(e) => setAutor(e.target.value)} />
+              {/* <TextField label="Confirme o e-mail" id="outlined-size-normal" color="primary" focused type='email' /> */}
+            </DivInputs>
 
-          <LabelForm label="Vida" />
-          <DivInputs>
-            <TextField label="Data de nascimento" id="outlined-size-normal" color="primary" focused type='date' value={dataNascimento} onChange={(e) => setDataNascimento(e.target.value)} />
-            <TextField label="Data de falecimento" id="outlined-size-normal" color="primary" focused type='date' value={dataFalecimento} onChange={(e) => setDataFalecimento(e.target.value)} />
-          </DivInputs>
-          <DivInputs>
-            <TextField
-              label="História"
-              multiline
-              rows={4}
-              focused
-              onChange={(e) => setHistoria(e.target.value)}
-            />
-          </DivInputs>
+            <DivInputs>
+              <Button variant='contained' color='secondary' sx={{ color: 'white' }} startIcon={<AddIcon />} onClick={() => {
+                criarMemorial()
+              }}>Criar</Button>
+            </DivInputs>
 
-          <DivInputs>
-            <Button
-              component="label"
-              role={undefined}
-              variant="outlined"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-              onChange={(e) => {
-                const input = e.target as HTMLInputElement
-                const files = input.files
-                if (files) setFotosMemorial(Array.from(files))
-              }}
-            >
-              Imagens
-              <VisuallyHiddenInput
-                type="file"
-                onChange={(event) => console.log(event.target.files)}
-                multiple
-              />
-            </Button>
+          </Box>
+        </Container>
 
-            {fotosMemorial.length > 0 && (
-              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 2 }}>
-                {fotosMemorial.map((file, i) => (
-                  <img
-                    key={i}
-                    src={URL.createObjectURL(file)}
-                    alt={`Preview ${i}`}
-                    style={{ height: 100, borderRadius: 4 }}
-                  />
-                ))}
-              </Box>
-            )}
-
-          </DivInputs>
-
-          <LabelForm label="Dados do responsável" />
-          <DivInputs>
-            <TextField label="Nome do responsável" id="outlined-size-normal" color="primary" focused onChange={(e) => setNomeAutor(e.target.value)} />
-            <TextField label="Contato do responsável" id="outlined-size-normal" color="primary" focused onChange={(e) => setContatoAutor(e.target.value)} />
-          </DivInputs>
-          <DivInputs>
-            <TextField label="E-mail" id="outlined-size-normal" color="primary" focused type='email' onChange={(e) => setAutor(e.target.value)} />
-            {/* <TextField label="Confirme o e-mail" id="outlined-size-normal" color="primary" focused type='email' /> */}
-          </DivInputs>
-
-          <DivInputs>
-            <Button variant='contained' color='secondary' sx={{ color: 'white' }} startIcon={<AddIcon />} onClick={() => {
-              criarMemorial()
-            }}>Criar</Button>
-          </DivInputs>
-
-        </Box>
-      </Container>
-
-    </Box>
+      </Box>
+    </AuthLayout>
   )
 }

@@ -11,10 +11,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { AuthLayout } from "../authLayout";
 import { API_URL } from "@/utils/texts";
+import { authService } from "@/utils/auth";
+import { ModalAlert } from "../components/ModalAlert";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
 
   const [memorials, setMemorials] = useState<Memorial[]>([])
+  const [abrirModalAlert, setAbrirModalAlert] = useState<boolean>(false)
 
   async function getDisplayMemorials(): Promise<Memorial[]> {
     try {
@@ -29,6 +34,9 @@ export default function Home() {
     }
   }
 
+  const handleFecharModal = (estado: boolean) => {
+    setAbrirModalAlert(estado)
+  }
 
   useEffect(() => {
     getDisplayMemorials().then(setMemorials)
@@ -60,11 +68,18 @@ export default function Home() {
           <Typography variant="body1" sx={{ color: "white", mt: 2 }}>
             Crie memoriais, explore homenagens de outras pessoas e mantenha vivas as lembranças de quem continua presente nos corações de quem fica.
           </Typography>
-          <Link href="/createMemorial">
-            <Button variant="contained" sx={{ mt: 6 }} color="secondary" startIcon={<AddIcon />}>
+          <Box>
+            <Button variant="contained" sx={{ mt: 6 }} color="secondary" startIcon={<AddIcon />} onClick={() => {
+              if (!authService.isAuthenticated()) {
+                console.log('abrir modal')
+                setAbrirModalAlert(true)
+                return
+              }
+              router.push('/createMemorial')
+            }}>
               Criar um memorial
             </Button>
-          </Link>
+          </Box>
 
         </Container>
       </Box>
@@ -156,6 +171,13 @@ export default function Home() {
         </Box>
 
       </Box>
+
+      <ModalAlert
+        titulo="Não é possível criar memoriais!"
+        conteudo="Para que você consiga publicar memoriais é necessário ter uma conta e estar logado!"
+        aberto={abrirModalAlert}
+        setAberto={handleFecharModal}
+      />
     </Box>
   );
 }
