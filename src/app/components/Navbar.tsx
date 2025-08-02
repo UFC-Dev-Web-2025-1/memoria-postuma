@@ -1,3 +1,4 @@
+"use client"
 import { AppBar, Avatar, Badge, Box, Button, IconButton, MenuItem, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -18,6 +19,9 @@ import StyleIcon from '@mui/icons-material/Style';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import InputIcon from '@mui/icons-material/Input';
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { authService } from "@/utils/auth";
+import { tempoDesde } from "@/utils/texts";
 
 interface NavbarProps {
   // por enquanto manterei o controle da pagina atual apenas por uma prop de string
@@ -25,32 +29,64 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
+  const router = useRouter();
+
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
-  const DrawerList = (
+  const [usuarioInfos, setUsuarioInfos] = React.useState<User>()
+  const [logado, setLogado] = React.useState<boolean>()
+
+  const handleExibir = (role: Role) => {
+    if (Role.NAO_AUTENTICADO === role) {
+      return true
+    } else {
+      if (logado) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+
+  React.useEffect(() => {
+    if (authService.isAuthenticated()) {
+      setLogado(true)
+      if (localStorage.getItem('user') != null) {
+        const userObj = localStorage.getItem('user')
+        if (userObj) {
+          setUsuarioInfos(JSON.parse(userObj) as User)
+        }
+      }
+    } else {
+      setLogado(false)
+    }
+
+  }, [])
+
+  const DrawerList = (    
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <List>
+      <List sx={{ display: (logado)?'':'none' }}>
 
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
               <Avatar
-                alt="Augusto Lima"
-                src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                alt={usuarioInfos?.username}
+                // src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
                 sx={{ width: 56, height: 56 }}
               />
             </ListItemIcon>
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding>
+        <ListItem disablePadding >
           <ListItemButton>
             <Typography variant="body1">
-              Augusto Lima
+              { usuarioInfos?.username }
             </Typography>
           </ListItemButton>
         </ListItem>
@@ -58,7 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
         <ListItem disablePadding>
           <ListItemButton>
             <Typography variant="body2">
-              Cadastrado há dois meses
+              Cadastrado há {tempoDesde(usuarioInfos?.createdAt)}
             </Typography>
           </ListItemButton>
         </ListItem>
@@ -67,7 +103,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
       <Divider />
       <List>
         {itemsDoMenu.map((item) => (
-          <ListItem key={item.nome} disablePadding>
+          <ListItem key={item.nome} sx={{display: (handleExibir(item.role)?'flex':'none')}}  disablePadding>
 
             <Link href={item.rota}>
               <ListItemButton>
@@ -82,15 +118,16 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
 
         <ListItem sx={{ display: 'flex', justifyContent: 'flex-end' }}>
 
-            <Link href={"/"}>
-              <ListItemButton>
-                <ListItemText primary={'Sair'} />
-                <ListItemIcon sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <InputIcon />
-                </ListItemIcon>
-              </ListItemButton>
-            </Link>
-          </ListItem>
+          <ListItemButton sx={{ display: (logado)?'flex':'none' }} onClick={async () => {
+            authService.logout()
+            router.push('/login')
+          }}>
+            <ListItemText primary={'Sair'} />
+            <ListItemIcon sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <InputIcon />
+            </ListItemIcon>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -112,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
             {paginaAtual}
           </Typography>
 
-          <Box sx={{ display: 'flex' }}>
+          <Box sx={{ display: (logado)?'flex':'none' }}>
             <MenuItem sx={{ padding: 1 }}>
               <IconButton
                 size="small"
@@ -138,12 +175,27 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
                 size="small"
               >
                 <Avatar
-                  alt="Foto de perfil"
-                  src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
+                  alt={usuarioInfos?.username}
+                  // src="https://img.freepik.com/fotos-gratis/homem-sorridente-de-vista-frontal-na-camara-escura_23-2149893830.jpg"
                   sx={{ width: 45, height: 45 }}
                 />
               </IconButton>
             </MenuItem>
+          </Box>
+
+          <Box sx={{ display: (logado)?'none':'flex' }}>
+            <MenuItem sx={{ padding: 1 }}>
+            <Link href={'/register'}>
+              <Button color="warning" sx={{color: '#3C68AE'}} variant="contained">Registrar-se</Button>
+            </Link>
+            </MenuItem>
+
+            <MenuItem sx={{ padding: 1 }}>
+              <Link href={'/login'}>
+                <Button color="warning" variant="outlined">Entrar</Button>
+              </Link>
+            </MenuItem>
+
           </Box>
 
         </Toolbar>
@@ -159,33 +211,44 @@ export const Navbar: React.FC<NavbarProps> = ({ paginaAtual }) => {
 interface item {
   nome: string,
   icone: React.JSX.Element,
-  rota: string
+  rota: string,
+  role: Role
+}
+
+enum Role {
+  NAO_AUTENTICADO,
+  AUTENTICADO
 }
 
 const itemsDoMenu: item[] = [
   {
     nome: 'Início',
     icone: <HomeIcon />,
-    rota: '/home'
+    rota: '/home',
+    role: Role.NAO_AUTENTICADO
   },
   {
     nome: 'Explorar',
     icone: <StyleIcon />,
-    rota: '/explore'
+    rota: '/explore',
+    role: Role.NAO_AUTENTICADO
   },
   {
     nome: 'Meus memoriais',
     icone: <DynamicFeedIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   },
   {
     nome: 'Memoriais favoritos',
     icone: <FavoriteIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   },
   {
     nome: 'Notificações',
     icone: <NotificationsIcon />,
-    rota: "/home"
+    rota: "/home",
+    role: Role.AUTENTICADO
   }
 ]

@@ -18,6 +18,7 @@ import FlareIcon from '@mui/icons-material/Flare';
 import ChurchIcon from '@mui/icons-material/Church';
 import { Box, Button } from '@mui/material';
 import { API_URL, limitarPalavras } from '@/utils/texts';
+import Link from 'next/link';
 
 interface DateLifeInfoProps {
   type: string,
@@ -99,7 +100,9 @@ export const CardMemorialHome: React.FC<CardMemorialHomeProps> = ({ fotoMemorial
       </CardContent>
 
       <CardActions disableSpacing sx={{ maxWidth: 280, minWidth: 280, display: 'flex', justifyContent: 'start', paddingInline: 2 }}>
-        <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Continuar lendo...</Button>
+        <Link href={{ pathname: '/explore/details', query: { id: documentId } }}>
+          <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Continuar lendo...</Button>
+        </Link>
       </CardActions>
 
     </Card>
