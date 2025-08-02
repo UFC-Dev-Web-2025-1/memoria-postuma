@@ -9,6 +9,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { API_URL } from '@/utils/texts';
 import { AuthLayout } from '../authLayout';
+import { useRouter } from 'next/navigation';
 
 interface LabelFormProps {
   label: string
@@ -54,6 +55,8 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export default function CreateMemorial() {
+  const router = useRouter()
+
   // states para controle do formulário
   const [nome, setNome] = useState<string>('')
   const [cidade, setCidade] = useState<string>('')
@@ -118,6 +121,7 @@ export default function CreateMemorial() {
       await axios.post(`${API_URL}/api/memorials`, memorial)
 
       alert('Memorial criado com sucesso!')
+      router.push('/explore')
     } catch (err) {
       console.error('Erro ao criar memorial:', err)
       alert('Erro ao criar memorial.')

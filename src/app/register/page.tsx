@@ -150,6 +150,9 @@ export default function RegisterPage() {
               />
             )
           }
+          onClick={async () => {
+            await authService.loginWithGoogle();
+          }}
         >
           {googleLoading ? 'REGISTRANDO...' : 'ENTRAR COM GOOGLE'}
         </Button>
