@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:1337'
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function limitarPalavras(text: string, wordLimit: number): string {
   const words = text.split(' ')

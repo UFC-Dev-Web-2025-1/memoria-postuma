@@ -80,6 +80,47 @@ export const authService = {
     }
   },
 
+  async loginWithGoogle(): Promise<{ success: boolean; message: string }> {
+    try {
+      const googleAuthUrl = `${API_URL}/api/connect/google`;
+      const width = 500;
+      const height = 600;
+      const left = window.screenX + (window.outerWidth - width) / 2;
+      const top = window.screenY + (window.outerHeight - height) / 2;
+
+      const authWindow = window.open(
+        googleAuthUrl,
+        'Google Login',
+        `width=${width},height=${height},left=${left},top=${top}`
+      );
+
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+          try {
+            const url = authWindow?.location.href;
+
+            if (url && url.includes('access_token')) {
+              // Fechar popup
+              authWindow?.close();
+              clearInterval(interval);
+              resolve({ success: true, message: 'Login com Google realizado com sucesso!' });
+            }
+          } catch (err) {
+            // Ignorado devido ao CORS até redirecionar
+          }
+
+          if (authWindow?.closed) {
+            clearInterval(interval);
+            resolve({ success: false, message: 'Login cancelado.' });
+          }
+        }, 1000);
+      });
+    } catch (err) {
+      console.error('Erro no login com Google:', err);
+      return { success: false, message: 'Erro ao autenticar com o Google' };
+    }
+  },
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
