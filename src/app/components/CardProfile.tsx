@@ -110,7 +110,7 @@ export const CardProfile: React.FC<CardProfileProps> = ({ nome, descricao, nasci
 
       <CardActions disableSpacing sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', paddingTop: 1 }}>
 
-        <Link href={{ pathname: '/explore/details', query: { id: documentId } }}>
+        <Link href={{ pathname: '/details', query: { id: documentId } }}>
           <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Ver mais</Button>
         </Link>
 

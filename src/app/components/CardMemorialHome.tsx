@@ -100,7 +100,7 @@ export const CardMemorialHome: React.FC<CardMemorialHomeProps> = ({ fotoMemorial
       </CardContent>
 
       <CardActions disableSpacing sx={{ maxWidth: 280, minWidth: 280, display: 'flex', justifyContent: 'start', paddingInline: 2 }}>
-        <Link href={{ pathname: '/explore/details', query: { id: documentId } }}>
+        <Link href={{ pathname: '/details', query: { id: documentId } }}>
           <Button variant='text' color='primary' sx={{ fontWeight: '600' }} >Continuar lendo...</Button>
         </Link>
       </CardActions>
