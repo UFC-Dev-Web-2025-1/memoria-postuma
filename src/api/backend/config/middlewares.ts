@@ -3,7 +3,7 @@ export default [
   {
     name: 'strapi::cors',
     config: {
-      origin: ['http://localhost:3000'], // frontend
+      origin: ['https://memoria-postuma-project.netlify.app', 'http://localhost:3000'], // frontend
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
     },
   },
